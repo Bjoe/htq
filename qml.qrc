@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>ui/Home.qml</file>
+        <file>main.qml</file>
+        <file>ui/HomeForm.ui.qml</file>
+        <file>request.js</file>
+    </qresource>
+    <qresource prefix="/ui"/>
+</RCC>
