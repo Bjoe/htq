@@ -1,7 +1,11 @@
 .pragma library
 
-function getJson(command , onDoneCallback)
+var passwd;
+var giturl;
+
+function getGithubJson(command , onDoneCallback)
 {
+    console.log(giturl + " " + passwd);
     var httpRequest = new XMLHttpRequest();
     httpRequest.onreadystatechange = function() {
         if (httpRequest.readyState == XMLHttpRequest.DONE) {
@@ -11,15 +15,15 @@ function getJson(command , onDoneCallback)
             onDoneCallback(json);
         }
     }
-    httpRequest.open("POST", "https://api.github.com/graphql");
-    httpRequest.setRequestHeader("Authorization", "Basic QmpvZTowMTEwNTM3MTE0YWVlYzE3ZjYwMzcwNTczNzA5NGM0ZjM4ZGI5NGJj");
+    httpRequest.open("POST", giturl);
+    httpRequest.setRequestHeader("Authorization", "Basic " + passwd);
     httpRequest.setRequestHeader("Accept", "application/json");
     var request = "{ \"query\": \"" + command + "\"}";
     console.log("Request: => " + request)
     httpRequest.send(request);
 }
 
-function getRepository(owner, reponame, resultCallback)
+function getGithubRepository(owner, reponame, resultCallback)
 {
     var cmd = "query { \
       repository(owner:\\\"" + owner + "\\\", name:\\\"" + reponame + "\\\") { \
@@ -27,18 +31,18 @@ function getRepository(owner, reponame, resultCallback)
       } \
     }";
 
-    getJson(cmd, function(json)
+    getGithubJson(cmd, function(json)
     {
         var repo = json.data.repository;
         resultCallback(repo.projectsUrl)
     });
 }
 
-function getBranches(owner, reponame, resultCallback)
+function getGithubBranches(owner, reponame, resultCallback)
 {
     var cmd = "query { \
       repository(owner:\\\"" + owner + "\\\", name:\\\"" + reponame + "\\\") { \
-        refs(refPrefix: \\\"refs/heads/\\\", first: 2) { \
+        refs(refPrefix: \\\"refs/heads/\\\", first: 20) { \
           edges { \
             node { \
               name \
@@ -52,10 +56,10 @@ function getBranches(owner, reponame, resultCallback)
       } \
     }"
 
-    getJson(cmd, function(json)
+    getGithubJson(cmd, function(json)
     {
         var repo = json.data.repository;
-        getNextBranch(owner, reponame, repo.refs.pageInfo.endCursor, repo.refs.pageInfo.hasNextPage, function(result)
+        getNextGithubBranch(owner, reponame, repo.refs.pageInfo.endCursor, repo.refs.pageInfo.hasNextPage, function(result)
         {
             var r = result.concat(repo.refs.edges);
             resultCallback(r);
@@ -63,13 +67,13 @@ function getBranches(owner, reponame, resultCallback)
     });
 }
 
-function getNextBranch(owner, reponame, endCursor, hasNextPage, resultCallback)
+function getNextGithubBranch(owner, reponame, endCursor, hasNextPage, resultCallback)
 {
     if(hasNextPage)
     {
         var nextcmd = "query { \
           repository(owner:\\\"" + owner + "\\\", name:\\\"" + reponame + "\\\") { \
-            refs(refPrefix: \\\"refs/heads/\\\", first: 2, after: \\\"" + endCursor + "\\\") { \
+            refs(refPrefix: \\\"refs/heads/\\\", first: 20, after: \\\"" + endCursor + "\\\") { \
               edges { \
                 node { \
                   name \
@@ -82,9 +86,9 @@ function getNextBranch(owner, reponame, endCursor, hasNextPage, resultCallback)
             } \
           } \
         }";
-        getJson(nextcmd, function(json) {
+        getGithubJson(nextcmd, function(json) {
             var repo = json.data.repository;
-            getNextBranch(owner, reponame, repo.refs.pageInfo.endCursor, repo.refs.pageInfo.hasNextPage, function(result)
+            getNextGithubBranch(owner, reponame, repo.refs.pageInfo.endCursor, repo.refs.pageInfo.hasNextPage, function(result)
             {
                 var r = result.concat(repo.refs.edges);
                 resultCallback(r);
@@ -98,7 +102,7 @@ function getNextBranch(owner, reponame, endCursor, hasNextPage, resultCallback)
     }
 }
 
-function getCommit(owner, reponame, branch, resultCallback)
+function getGithubCommit(owner, reponame, branch, resultCallback)
 {
     var cmd = "query { \
       repository(owner:\\\"" + owner + "\\\", name:\\\"" + reponame + "\\\") { \
@@ -114,7 +118,7 @@ function getCommit(owner, reponame, branch, resultCallback)
       } \
     }";
 
-    getJson(cmd, function(json)
+    getGithubJson(cmd, function(json)
     {
         console.log(json);
         var commit = json.data.repository.ref.target;

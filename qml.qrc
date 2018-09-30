@@ -3,7 +3,19 @@
         <file>ui/Home.qml</file>
         <file>main.qml</file>
         <file>ui/HomeForm.ui.qml</file>
-        <file>request.js</file>
+        <file>githubRequest.js</file>
+        <file>gitlabRequest.js</file>
+        <file>ui/GitHubUrl.qml</file>
+        <file>ui/GitHubUrlForm.ui.qml</file>
+        <file>ui/GitLabUrl.qml</file>
+        <file>ui/GitLabUrlForm.ui.qml</file>
+        <file>ui/GitLabProject.qml</file>
+        <file>ui/GitLabProjectForm.ui.qml</file>
+        <file>ui/GitHubProject.qml</file>
+        <file>ui/GitHubProjectForm.ui.qml</file>
+        <file>ui/GitHubRepo.qml</file>
+        <file>ui/GitHubRepoForm.ui.qml</file>
+        <file>ui/GitHubOwner.qml</file>
+        <file>ui/GitHubOwnerForm.ui.qml</file>
     </qresource>
-    <qresource prefix="/ui"/>
 </RCC>

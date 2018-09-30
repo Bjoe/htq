@@ -5,7 +5,13 @@ import QtQuick.Layouts 1.1
 Page {
     id: page
     width: 600
-    height: 400
+    height: 450
+    property alias ownerMouseArea: ownerMouseArea
+    property alias projectMouseArea: projectMouseArea
+    property alias urlMouseArea: urlMouseArea
+    property alias ownerComboBox: ownerComboBox
+    property alias typeComboBox: typeComboBox
+    property alias urlComboBox: urlComboBox
     property alias clearButton: clearButton
     property alias progressBar: progressBar
     property alias copyUrlbutton: copyUrlbutton
@@ -20,49 +26,86 @@ Page {
 
     title: qsTr("Home")
 
-    ComboBox {
-        id: projectComboBox
-        displayText: "Project"
-        anchors.right: clearButton.left
-        anchors.rightMargin: 5
-        anchors.top: parent.top
-        anchors.topMargin: 5
-        anchors.left: parent.left
-        anchors.leftMargin: 5
-    }
-
-    Button {
-        id: clearButton
-        x: 382
-        text: qsTr("Clear")
-        anchors.right: parent.right
-        anchors.rightMargin: 5
-        anchors.top: parent.top
-        anchors.topMargin: 5
-    }
-
-    ComboBox {
-        id: branchComboBox
-        displayText: "Branch"
-        anchors.rightMargin: 5
-        anchors.leftMargin: 5
-        anchors.top: projectComboBox.bottom
-        anchors.right: parent.right
-        anchors.left: parent.left
-        anchors.topMargin: 5
-    }
-
     GridLayout {
         id: gridLayout
-        columns: 3
-        anchors.top: branchComboBox.bottom
-        anchors.right: parent.right
-        anchors.bottom: parent.bottom
-        anchors.left: parent.left
+        anchors.rightMargin: 5
+        anchors.leftMargin: 5
+        anchors.bottomMargin: 5
         anchors.topMargin: 5
+        anchors.fill: parent
+        columns: 3
+
+        ComboBox {
+            id: typeComboBox
+            displayText: "Git type"
+            textRole: ""
+            Layout.fillWidth: true
+            Layout.columnSpan: 3
+        }
+
+        ComboBox {
+            id: urlComboBox
+            textRole: "text"
+            enabled: false
+            Layout.columnSpan: 3
+            Layout.fillWidth: true
+            editable: false
+            displayText: "Git url"
+
+            MouseArea {
+                id: urlMouseArea
+                anchors.fill: parent
+            }
+        }
+
+        ComboBox {
+            id: ownerComboBox
+            textRole: "text"
+            enabled: false
+            Layout.columnSpan: 3
+            Layout.fillWidth: true
+            editable: false
+            displayText: "Owner"
+
+            MouseArea {
+                id: ownerMouseArea
+                anchors.fill: parent
+            }
+        }
+
+        ComboBox {
+            id: projectComboBox
+            textRole: "text"
+            enabled: false
+            Layout.columnSpan: 3
+            Layout.fillWidth: true
+            editable: false
+            displayText: "Project"
+
+            MouseArea {
+                id: projectMouseArea
+                anchors.fill: parent
+            }
+        }
+
+        ComboBox {
+            id: branchComboBox
+            textRole: "text"
+            enabled: false
+            Layout.columnSpan: 2
+            Layout.fillWidth: true
+            editable: false
+            displayText: "Branch"
+        }
+
+        Button {
+            id: clearButton
+            text: qsTr("Clear")
+        }
 
         Frame {
             id: frame
+            Layout.fillWidth: false
 
             Label {
                 id: label
@@ -144,29 +187,9 @@ Page {
             }
             ProgressBar {
                 id: progressBar
-                //   Layout.preferredHeight: 40
                 anchors.fill: parent
                 opacity: 0.0
                 value: 0.5
-                /*                padding: 2
-
-                background: Rectangle {
-//                          implicitWidth: 200
-//                          implicitHeight: 6
-                          opacity: 0.0
-                      }
-
-                contentItem: Item {
-                          implicitWidth: 200
-                          implicitHeight: 4
-
-                          Rectangle {
-                              width: control.visualPosition * parent.width
-                              height: parent.height
-                              radius: 2
-                              color: "#17a81a"
-                          }
-                }*/
             }
         }
 
@@ -185,3 +208,9 @@ Page {
         }
     }
 }
+
+
+/*##^## Designer {
+    D{i:29;anchors_height:100;anchors_width:100}
+}
+ ##^##*/
