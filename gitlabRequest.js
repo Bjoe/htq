@@ -8,9 +8,11 @@ function gitlabRequest(command , onDoneCallback) {
     httpRequest.onreadystatechange = function() {
         if (httpRequest.readyState == XMLHttpRequest.DONE) {
             var text = httpRequest.responseText;
-            console.log("Response: " + text);
-            var json = JSON.parse(text);
-            onDoneCallback(json);
+            //console.log("Response: " + text);
+            if (text) {
+                var json = JSON.parse(text);
+                onDoneCallback(json);
+            }
         }
     }
     var u = giturl + "/api/v4/" + command;
@@ -28,7 +30,7 @@ function getProjects(projectId, resultCallback)
 
 function getBranches(projectId, resultCallback)
 {
-    gitlabRequest("projects/" + projectId + "/repository/branches", resultCallback);
+    gitlabRequest("projects/" + projectId + "/repository/branches?per_page=100", resultCallback);
 }
 
 function getCommit(projectId, branch, resultCallback)

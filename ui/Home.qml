@@ -568,7 +568,7 @@ HomeForm {
                             commitMessageOutput.text = json.commit.title;
                             var webUrl = gitlabProjectsModel.get(projectComboBox.currentIndex).web_url;
                             urlOutput.text = webUrl + "/repository/" + json.commit.id + "/archive.tar.gz";
-                            sha1sumObject.start(urlOutput.text);
+                            sha1sumObject.start(urlOutput.text + "?private_token=" + GitlabRequest.privtoken);
                         });
 
     }

@@ -5,12 +5,12 @@ var giturl;
 
 function getGithubJson(command , onDoneCallback)
 {
-    console.log(giturl + " " + passwd);
+    //console.log(giturl + " " + passwd);
     var httpRequest = new XMLHttpRequest();
     httpRequest.onreadystatechange = function() {
         if (httpRequest.readyState == XMLHttpRequest.DONE) {
             var text = httpRequest.responseText;
-            console.log("Response: => " + text);
+            //console.log("Response: => " + text);
             var json = JSON.parse(text);
             onDoneCallback(json);
         }
@@ -19,7 +19,7 @@ function getGithubJson(command , onDoneCallback)
     httpRequest.setRequestHeader("Authorization", "Basic " + passwd);
     httpRequest.setRequestHeader("Accept", "application/json");
     var request = "{ \"query\": \"" + command + "\"}";
-    console.log("Request: => " + request)
+    //console.log("Request: => " + request)
     httpRequest.send(request);
 }
 
@@ -120,7 +120,7 @@ function getGithubCommit(owner, reponame, branch, resultCallback)
 
     getGithubJson(cmd, function(json)
     {
-        console.log(json);
+        //console.log(json);
         var commit = json.data.repository.ref.target;
         resultCallback(commit.oid, commit.message, commit.zipballUrl);
     });
