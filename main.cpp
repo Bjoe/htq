@@ -9,6 +9,8 @@ int main(int argc, char *argv[])
 
     QGuiApplication app(argc, argv);
     app.setApplicationName("htq");
+    app.setOrganizationName("hunter");
+    app.setOrganizationDomain("hunter.sh");
 
     qmlRegisterType<util::Sha1Sum>("util", 1, 0, "Sha1Sum");
 
